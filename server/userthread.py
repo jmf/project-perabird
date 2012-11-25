@@ -1,6 +1,10 @@
 from protocol import *
 
 def userthread(sock,addr):
+
+	f = open('auth.db','r')
+	authtext = f.readlines()
+	f.close()
 	while 1:
 		o = recv(sock)[1]
 		if not o: break
@@ -21,6 +25,12 @@ def userthread(sock,addr):
 				c = hex(o).replace('0x','')
 				if len(c)==1: c='0'+c
 				pswd += c
-			print("User:",user,"Password:",pswd)
-			
-		
+			print("Username:",user,"Password: ",pswd)
+			n=0
+			while n < len(authtext): 
+				data = authtext[n].replace('\n','').split(':')		
+				if user == data[0]:
+					if pswd == data[1]:
+						print("User is registered")
+				n=n+1
+
