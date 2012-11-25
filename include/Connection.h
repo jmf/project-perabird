@@ -7,6 +7,9 @@
 #define MSG_BEGIN 1
 #define MSG_END 2
 #define MSG_LOGIN 5
+#define MSG_JOIN 6
+#define MSG_QUIT 7
+#define MSG_PLAYERPOS 8
 
 class Connection
 {

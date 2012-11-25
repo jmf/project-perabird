@@ -15,44 +15,6 @@
 #include "Debug.h"
 
 
-struct ToggleInactiveEventHandler : Gui::EventHandler
-{
-	ToggleInactiveEventHandler(Gui::Element *_el) : el(_el) {}
-	virtual void operator()(Gui::Event &e)
-	{
-		if (e.type == Gui::MOUSEUP)
-		{
-			if (el->getState()!=Gui::INACTIVE)
-				el->setState(Gui::INACTIVE);
-			else
-				el->setState(Gui::NORMAL);
-		}
-	}
-	private:
-		Gui::Element *el;
-};
-
-struct CenterPosEventHandler : Gui::EventHandler
-{
-	CenterPosEventHandler(Gui::Element*_el,int _xadd, int _yadd)
-	 : el(_el), xadd(_xadd), yadd(_yadd)
-	 {
-	 	GLint viewport [4];
-	 	glGetIntegerv(GL_VIEWPORT,viewport);
-	 	el->setPosition(viewport[2]/2+xadd,viewport[3]/2+yadd);
-	 }
-	 virtual void operator()(Gui::Event &e)
-	 {
-	 	if(e.type == Gui::RESIZE)
-	 	{
-	 		el->setPosition(e.x/2+xadd,e.y/2+yadd);
-	 	}
-	 }
-	 private:
-	 	Gui::Element *el;
-	 	int xadd, yadd;
-};
-
 int main (int argc, char**argv)
 {
 	SDL_Init(SDL_INIT_VIDEO);

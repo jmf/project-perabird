@@ -1,4 +1,5 @@
 from protocol import *
+from auth import *
 
 def userthread(sock,addr):
 
@@ -25,12 +26,8 @@ def userthread(sock,addr):
 				c = hex(o).replace('0x','')
 				if len(c)==1: c='0'+c
 				pswd += c
-			print("Username:",user,"Password: ",pswd)
-			n=0
-			while n < len(authtext): 
-				data = authtext[n].replace('\n','').split(':')		
-				if user == data[0]:
-					if pswd == data[1]:
-						print("User is registered")
-				n=n+1
+			if auth(user,pswd):
+				print(user,"logged in from",addr[0])
+			else:
+				print(addr[0],"tried to login as",user)
 
