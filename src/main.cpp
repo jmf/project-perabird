@@ -1,7 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <cmath>
-#include <ctime>
 #include <sstream>
 #include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
@@ -32,11 +30,8 @@ int main (int argc, char**argv)
 	
 	Mix_Chunk*sound_jump = res->getSound("jump");
 	bool done(false);
+	int oldtime(SDL_GetTicks()), newtime(oldtime);
 	SDL_Event e;
-	int mx,my;
-	int x(0),y(0); float z(0);
-	int points[800];
-	srand(time(0));
 	
 	Forms::LoginForm form(&done);
 	
@@ -108,6 +103,9 @@ int main (int argc, char**argv)
 		glEnd();
 		glFlush();
 		SDL_GL_SwapBuffers();
+		newtime = SDL_GetTicks();
+		if (newtime-oldtime < 30) SDL_Delay(30-(newtime-oldtime));
+		oldtime = newtime;
 	}
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 	Mix_CloseAudio();
