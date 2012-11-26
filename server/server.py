@@ -9,10 +9,8 @@ main_socket.listen(5)
 done = False
 
 while not done:
-	print("Accepting new connections...")
 	try: sock, addr = main_socket.accept()
 	except: break
-	print("Connection from ", addr)
 	t = Thread(target=userthread, args=(sock,addr))
 	t.start()
 

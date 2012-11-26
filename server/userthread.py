@@ -1,18 +1,16 @@
+
 from protocol import *
 from auth import *
+from msgparser import *
 
 def userthread(sock,addr):
-
-	f = open('auth.db','r')
-	authtext = f.readlines()
-	f.close()
 	while 1:
 		o = recv(sock)[1]
 		if not o: break
 		if o != MSG_BEGIN: continue
 		msgType = recv(sock)[1]
 		if msgType == MSG_LOGIN:
-			user = ""
+			'''user = ""
 			o=-1
 			while 1:
 				c, o = recv(sock)
@@ -25,7 +23,10 @@ def userthread(sock,addr):
 				if o == MSG_END: break
 				c = hex(o).replace('0x','')
 				if len(c)==1: c='0'+c
-				pswd += c
+				pswd += c'''
+			parsed = parseMessage('str:hexstr',sock)
+			if len(parsed) != 2: continue
+			user, pswd = parsed
 			if auth(user,pswd):
 				print(user,"logged in from",addr[0])
 			else:

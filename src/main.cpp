@@ -28,7 +28,6 @@ int main (int argc, char**argv)
 	
 	Resources *res = Resources::getInstance();
 	
-	Mix_Chunk*sound_jump = res->getSound("jump");
 	bool done(false);
 	int oldtime(SDL_GetTicks()), newtime(oldtime);
 	SDL_Event e;
@@ -53,21 +52,8 @@ int main (int argc, char**argv)
 					done = true;
 					break;
 			} if (done) break;
-			if (!form.sdlEvent(e)) switch(e.type)
-			{
-				case SDL_KEYDOWN:
-					switch (e.key.keysym.sym)
-					{
-						case SDLK_SPACE:
-							Mix_PlayChannel(-1,sound_jump,0);
-							break;
-						default:
-							break;
-					}
-					break;
-				default:
-					break;
-			} if (done) break;
+			form.sdlEvent(e);
+			if (done) break;
 		}
 		int x,y;
 		if (done) break;
