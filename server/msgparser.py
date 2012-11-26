@@ -44,7 +44,6 @@ def parseMessage(msgspec, sock):
 				if len(c)==1: c='0'+c
 				s += c
 			parsed.append(s)
-			c, o = recv(sock)
 		if t == 'float':
 			parsed.append(struct.unpack('!f',sock.recv(struct.calcsize('!f'))))
 		if o != MSG_SEP: # can be MSG_END

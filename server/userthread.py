@@ -15,37 +15,41 @@
 #    along with Project Perabird.  If not, see <http://www.gnu.org/licenses/>
 
 
-
+from user import *
 from protocol import *
 from auth import *
 from msgparser import *
 
-def userthread(sock,addr):
-	while 1:
-		o = recv(sock)[1]
-		if not o: break
-		if o != MSG_BEGIN: continue
-		msgType = recv(sock)[1]
-		if msgType == MSG_LOGIN:
-			'''user = ""
-			o=-1
-			while 1:
-				c, o = recv(sock)
-				if o in (MSG_SEP,MSG_END): break
-				user += c
-			if o == MSG_END: continue
-			pswd = ""
-			while 1:
-				o = recv(sock)[1]
-				if o == MSG_END: break
-				c = hex(o).replace('0x','')
-				if len(c)==1: c='0'+c
-				pswd += c'''
-			parsed = parseMessage('str:hexstr',sock)
-			if len(parsed) != 2: continue
-			user, pswd = parsed
-			if auth(user,pswd):
-				print(user,"logged in from",addr[0])
-			else:
-				print(addr[0],"tried to login as",user)
+def userthread(user,users):
+	sock = user.sock
+	addr = user.addr
+	try:
+		print(addr[0],'connected')
+		while 1:
+			o = recv(sock)[1]
+			if not o: break
+			if o != MSG_BEGIN: continue
+			msgType = recv(sock)[1]
+			if msgType == MSG_LOGIN:
+				parsed = parseMessage('str:hexstr',sock)
+				if len(parsed) != 2: continue
+				name, pswd = parsed
+				if auth(name,pswd):
+					user.name = name
+					print(user.name,"logged in from",addr[0])
+					for u in users:
+						send(u.sock,MSG_BEGIN)
+						send(u.sock,MSG_JOIN)
+						send(u.sock,user.name)
+						send(u.sock,MSG_END)
+				else:
+					print(addr[0],"tried to login as",name)
+					send(user.sock,MSG_BEGIN)
+					send(user.sock,MSG_QUIT)
+					send(user.sock,MSG_END)
+					break
+	except:
+		print(addr[0],"lost connection")
+	user.sock.close()
+	users.remove(user)
 

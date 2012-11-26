@@ -17,6 +17,6 @@
 
 
 class User:
-	def __init__(self):
-		
-
+	def __init__(self,sock,addr):
+		self.sock = sock
+		self.addr = addr

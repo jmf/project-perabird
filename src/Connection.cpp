@@ -40,7 +40,17 @@ void Connection::send(void*msg, int size) {
 		SDLNet_TCP_Send(socket,msg,size);
 }
 void Connection::sendByte(uint8_t i) {
-	send(&i,sizeof(uint8_t));
+	send(&i,1);
+}
+
+uint8_t *Connection::recv(uint8_t buffer[], int size) {
+	SDLNet_TCP_Recv(socket,buffer,size);
+}
+
+uint8_t Connection::recvByte() {
+	uint8_t r(255);
+	recv(&r,1);
+	return r;
 }
 
 
@@ -53,5 +63,7 @@ void Connection::login(std::string user, std::string pswd)
 	unsigned char* hash = SHA256((const unsigned char*)pswd.c_str(),pswd.size(),0);
 	send(hash, SHA256_DIGEST_LENGTH);
 	sendByte(MSG_END);
+	recvByte();
+	std::cout << int(recvByte()) << std::endl;
 }
 

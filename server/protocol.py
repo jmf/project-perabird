@@ -28,3 +28,7 @@ def recv(sock):
 	if not data: return None, None
 	return chr(ord(data)), ord(data)
 
+def send(sock,data):
+	msg = data
+	if type(msg) == int: msg = chr(msg)
+	sock.send(msg.encode())

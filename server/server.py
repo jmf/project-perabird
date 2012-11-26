@@ -15,21 +15,36 @@
 #    along with Project Perabird.  If not, see <http://www.gnu.org/licenses/>
 
 
-from userthread import *
 from socket import socket, AF_INET, SOCK_STREAM
 from threading import Thread
+from sys import argv
 
-main_socket = socket(AF_INET,SOCK_STREAM)
-main_socket.bind(('0.0.0.0',5153))
-main_socket.listen(5)
+from user import *
+from userthread import *
 
-done = False
 
-while not done:
-	try: sock, addr = main_socket.accept()
-	except: break
-	t = Thread(target=userthread, args=(sock,addr))
-	t.start()
+def main():
+	main_socket = socket(AF_INET,SOCK_STREAM)
+	port = 5153
+	if len(argv) >= 2:
+		port = int(argv[1])
+	main_socket.bind(('0.0.0.0',port))
+	main_socket.listen(5)
+	
+	users = []
 
-print("Exiting...")
+	done = False
+
+	while not done:
+		try: sock, addr = main_socket.accept()
+		except: break
+		user = User(sock,addr)
+		users.append(user)
+		t = Thread(target=userthread, args=(user,users))
+		t.start()
+
+	print("Exiting...")
+
+if __name__ == "__main__":
+	main()
 

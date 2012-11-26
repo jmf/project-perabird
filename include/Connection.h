@@ -37,6 +37,8 @@ class Connection
 		bool isGood();
 		void send(void*msg, int size);
 		void sendByte(uint8_t i);
+		uint8_t * recv(uint8_t buffer[], int size);
+		uint8_t recvByte();
 		void login(std::string user, std::string pswd); // pswd will be hashed
 	private:
 		IPaddress ip;
