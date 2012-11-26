@@ -1,4 +1,22 @@
+#    Copyright (C) 2012 Zeg9
+#    
+#    This file is part of Project Perabird.
+#    Project Perabird is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    Project Perabird is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with Project Perabird.  If not, see <http://www.gnu.org/licenses/>
 
+
+
+import struct
 from protocol import *
 
 #msgspec:
@@ -27,6 +45,8 @@ def parseMessage(msgspec, sock):
 				s += c
 			parsed.append(s)
 			c, o = recv(sock)
+		if t == 'float':
+			parsed.append(struct.unpack('!f',sock.recv(struct.calcsize('!f'))))
 		if o != MSG_SEP: # can be MSG_END
 			break
 	return parsed
