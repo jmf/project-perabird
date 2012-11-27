@@ -16,34 +16,44 @@
     along with Project Perabird.  If not, see <http://www.gnu.org/licenses/>
 */
 
-#ifndef __CONNECTION_H__
-#define __CONNECTION_H__
 #include <string>
-#include <SDL/SDL_net.h>
+#include "Connection.h"
+#include "Console.h"
+#include "Game.h"
 
-#define MSG_SEP 0
-#define MSG_BEGIN 1
-#define MSG_END 2
-#define MSG_LOGIN 5
-#define MSG_JOIN 6
-#define MSG_QUIT 7
-#define MSG_PLAYERPOS 8
-#define MSG_CHAT 9
 
-class Connection
-{
-	public:
-		Connection(std::string host, int port);
-		~Connection();
-		bool isGood();
-		void send(void*msg, int size);
-		void sendByte(uint8_t i);
-		uint8_t * recv(uint8_t buffer[], int size);
-		uint8_t recvByte();
-		bool login(std::string user, std::string pswd); // pswd will be hashed
-	private:
-		IPaddress ip;
-		TCPsocket socket;
-};
+Game Game::instance;
+Game::Game(): connection(0) {}
+Game::~Game() {
+	delete connection;
+}
+Game* Game::getInstance () {
+	return &instance;
+}
 
-#endif //__CONNECTION_H__
+
+void Game::connect(std::string host, int port, std::string user, std::string pswd) {
+	disconnect();
+	connection = new Connection(host,port);
+	if (!connection->isGood()) {
+		getConsole()->print("[Can't connect to server]");
+		disconnect();
+	}
+	else if (connection->login(user,pswd)) {
+		username = user;
+		getConsole()->print("[Login accepted]");
+	}
+	else
+		getConsole()->print("[Bad login]");
+}
+void Game::disconnect() {
+	if (!connection) return;
+	delete connection;
+	connection = 0;
+}
+
+Console *Game::getConsole() {
+	return &console;
+}
+
+

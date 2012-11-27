@@ -19,8 +19,7 @@ from socket import socket, AF_INET, SOCK_STREAM
 from threading import Thread
 from sys import argv
 
-from user import *
-from userthread import *
+from acceptthread import *
 
 
 def main():
@@ -30,19 +29,28 @@ def main():
 		port = int(argv[1])
 	main_socket.bind(('0.0.0.0',port))
 	main_socket.listen(5)
-	
 	users = []
-
-	done = False
-
-	while not done:
-		try: sock, addr = main_socket.accept()
-		except: break
-		user = User(sock,addr)
-		users.append(user)
-		t = Thread(target=userthread, args=(user,users))
-		t.start()
-
+	
+	t = Thread(target=acceptthread, args=(main_socket,users))
+	t.daemon = True
+	t.start()
+	
+	while 1:
+		try:
+			t = input("> ")
+		except:
+			break
+		if type(t) != str: continue
+		if t == "list":
+			l = ""
+			for u in users:
+				if u.name:
+					l += u.name + ', '
+			print(l)
+		elif t == "shutdown":
+			break
+		else: print("Unknown command. Try help.")
+	main_socket.close()
 	print("Exiting...")
 
 if __name__ == "__main__":

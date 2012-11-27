@@ -16,34 +16,32 @@
     along with Project Perabird.  If not, see <http://www.gnu.org/licenses/>
 */
 
-#ifndef __CONNECTION_H__
-#define __CONNECTION_H__
+#ifndef __GAME_H__
+#define __GAME_H__
+
 #include <string>
-#include <SDL/SDL_net.h>
+#include "Connection.h"
+#include "Console.h"
 
-#define MSG_SEP 0
-#define MSG_BEGIN 1
-#define MSG_END 2
-#define MSG_LOGIN 5
-#define MSG_JOIN 6
-#define MSG_QUIT 7
-#define MSG_PLAYERPOS 8
-#define MSG_CHAT 9
+#define GAME Game::getInstance()
 
-class Connection
+class Game
 {
 	public:
-		Connection(std::string host, int port);
-		~Connection();
-		bool isGood();
-		void send(void*msg, int size);
-		void sendByte(uint8_t i);
-		uint8_t * recv(uint8_t buffer[], int size);
-		uint8_t recvByte();
-		bool login(std::string user, std::string pswd); // pswd will be hashed
+		static Game *getInstance();
+		void connect(std::string host, int port, std::string user, std::string pswd);
+		void disconnect();
+		Console *getConsole();
+		void render();
 	private:
-		IPaddress ip;
-		TCPsocket socket;
+		Connection * connection;
+		Console console;
+		
+		std::string username;
+
+		Game();
+		~Game();
+		static Game instance;
 };
 
-#endif //__CONNECTION_H__
+#endif //__GAME_H__

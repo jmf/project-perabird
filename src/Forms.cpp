@@ -17,6 +17,7 @@
 */
 
 #include "Gui.h"
+#include "Game.h"
 #include "Resources.h"
 #include "SimpleEventHandlers.h"
 #include "Connection.h"
@@ -32,8 +33,7 @@ namespace Forms {
 			if (e.type == Gui::MOUSEUP)
 			{
 				if (userEntry->getEntryText() == "" || passEntry->getEntryText() == "") return;
-				Connection c("localhost",5153);
-				c.login(userEntry->getEntryText(),passEntry->getEntryText());
+				GAME->connect("localhost",5153,userEntry->getEntryText(),passEntry->getEntryText());
 			}
 		}
 		private:

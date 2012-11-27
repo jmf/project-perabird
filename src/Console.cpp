@@ -16,34 +16,49 @@
     along with Project Perabird.  If not, see <http://www.gnu.org/licenses/>
 */
 
-#ifndef __CONNECTION_H__
-#define __CONNECTION_H__
+#include <vector>
 #include <string>
-#include <SDL/SDL_net.h>
+#include <iostream>
+#include <SDL/SDL.h>
+#include <GL/gl.h>
+#include "Gui.h"
+#include "Resources.h"
+#include "Console.h"
 
-#define MSG_SEP 0
-#define MSG_BEGIN 1
-#define MSG_END 2
-#define MSG_LOGIN 5
-#define MSG_JOIN 6
-#define MSG_QUIT 7
-#define MSG_PLAYERPOS 8
-#define MSG_CHAT 9
+Console::Console() : font(0) {}
+Console::~Console() {
+	if (font)
+		delete font;
+}
 
-class Connection
+void Console::init()
 {
-	public:
-		Connection(std::string host, int port);
-		~Connection();
-		bool isGood();
-		void send(void*msg, int size);
-		void sendByte(uint8_t i);
-		uint8_t * recv(uint8_t buffer[], int size);
-		uint8_t recvByte();
-		bool login(std::string user, std::string pswd); // pswd will be hashed
-	private:
-		IPaddress ip;
-		TCPsocket socket;
-};
+	font = new Gui::Font("console");
+}
 
-#endif //__CONNECTION_H__
+void Console::print(std::string line)
+{
+	text.push_back(line);
+}
+
+void Console::event(SDL_Event &e)
+{
+	
+}
+
+void Console::render()
+{
+	if(!font) return;
+	glPushMatrix();
+	glScalef(16,16,1);
+	int startline = text.size()-10;
+	if (text.size() < 10) startline = 0;
+	int endline = text.size();
+	for (unsigned int i = startline; i < endline; i++)
+	{
+		font->render(text[i]);
+		glTranslated(0,1,0);
+	}
+	glPopMatrix();
+}
+

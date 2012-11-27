@@ -16,34 +16,25 @@
     along with Project Perabird.  If not, see <http://www.gnu.org/licenses/>
 */
 
-#ifndef __CONNECTION_H__
-#define __CONNECTION_H__
+#ifndef __CONSOLE_H__
+#define __CONSOLE_H__
+
+#include <vector>
 #include <string>
-#include <SDL/SDL_net.h>
+#include <SDL/SDL.h>
+#include "Gui.h"
 
-#define MSG_SEP 0
-#define MSG_BEGIN 1
-#define MSG_END 2
-#define MSG_LOGIN 5
-#define MSG_JOIN 6
-#define MSG_QUIT 7
-#define MSG_PLAYERPOS 8
-#define MSG_CHAT 9
-
-class Connection
-{
+class Console {
 	public:
-		Connection(std::string host, int port);
-		~Connection();
-		bool isGood();
-		void send(void*msg, int size);
-		void sendByte(uint8_t i);
-		uint8_t * recv(uint8_t buffer[], int size);
-		uint8_t recvByte();
-		bool login(std::string user, std::string pswd); // pswd will be hashed
+		Console();
+		~Console();
+		void init();
+		void print(std::string line);
+		void event(SDL_Event &e);
+		void render();
 	private:
-		IPaddress ip;
-		TCPsocket socket;
+		std::vector<std::string> text;
+		Gui::Font *font;
 };
 
-#endif //__CONNECTION_H__
+#endif //__CONSOLE_H__

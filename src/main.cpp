@@ -24,6 +24,7 @@
 #include <SDL/SDL_net.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include "Game.h"
 #include "Gui.h"
 #include "Forms.h"
 #include "Resources.h"
@@ -43,6 +44,7 @@ int main (int argc, char**argv)
 	SDL_SetVideoMode(width,height,32,SDL_OPENGL|SDL_RESIZABLE);
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024);
 	Mix_AllocateChannels(8);
+	Game::getInstance()->getConsole()->init();
 	
 	Resources *res = Resources::getInstance();
 	
@@ -53,6 +55,10 @@ int main (int argc, char**argv)
 	Forms::LoginForm form(&done);
 	
 	bool inZone = false;
+	
+	Game::getInstance()->getConsole()->print("Test :D");
+	Game::getInstance()->getConsole()->print("Line 1");
+	Game::getInstance()->getConsole()->print("Line 2");
 	
 	while (!done)
 	{
@@ -78,33 +84,10 @@ int main (int argc, char**argv)
 		glClear(GL_COLOR_BUFFER_BIT);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		gluOrtho2D(0,1,0,1);
-		glDisable(GL_TEXTURE_2D);
-		glBegin(GL_QUADS);
-			glColor3d(1,1,1);
-			glVertex2d(0,0);
-			glVertex2d(1,0);
-			glColor3d(.75,.75,1);
-			glVertex2d(1,1);
-			glVertex2d(0,1);
-		glEnd();
-		glMatrixMode(GL_MODELVIEW);
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
 		gluOrtho2D(0,width,height,0);
 		glMatrixMode(GL_MODELVIEW);
 		form.render();
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluOrtho2D(0,1,0,1);
-		glDisable(GL_TEXTURE_2D);
-		glBegin(GL_LINES);
-			glColor3d(0,0,0);
-			glVertex2d(.5,0);
-			glVertex2d(.5,1);
-			glVertex2d(0,.5);
-			glVertex2d(1,.5);
-		glEnd();
+		Game::getInstance()->getConsole()->render();
 		glFlush();
 		SDL_GL_SwapBuffers();
 		newtime = SDL_GetTicks();

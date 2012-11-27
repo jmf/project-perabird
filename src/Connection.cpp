@@ -40,11 +40,12 @@ void Connection::send(void*msg, int size) {
 		SDLNet_TCP_Send(socket,msg,size);
 }
 void Connection::sendByte(uint8_t i) {
-	send(&i,1);
+	send(&i,sizeof(uint8_t));
 }
 
 uint8_t *Connection::recv(uint8_t buffer[], int size) {
-	SDLNet_TCP_Recv(socket,buffer,size);
+	if (isGood())
+		SDLNet_TCP_Recv(socket,buffer,size);
 }
 
 uint8_t Connection::recvByte() {
@@ -54,7 +55,7 @@ uint8_t Connection::recvByte() {
 }
 
 
-void Connection::login(std::string user, std::string pswd)
+bool Connection::login(std::string user, std::string pswd)
 {
 	sendByte(MSG_BEGIN);
 	sendByte(MSG_LOGIN);
@@ -64,6 +65,7 @@ void Connection::login(std::string user, std::string pswd)
 	send(hash, SHA256_DIGEST_LENGTH);
 	sendByte(MSG_END);
 	recvByte();
-	std::cout << int(recvByte()) << std::endl;
+	if (recvByte()==MSG_JOIN) return true;
+	return false;
 }
 
