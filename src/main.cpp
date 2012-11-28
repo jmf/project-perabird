@@ -88,8 +88,21 @@ int main (int argc, char**argv)
 		glClear(GL_COLOR_BUFFER_BIT);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
+		gluOrtho2D(0,1,0,1);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		glBindTexture(GL_TEXTURE_2D,RESOURCES->getTexture("login"));
+		glBegin(GL_QUADS);
+			glTexCoord2d(0,0); glVertex2d(0,0);
+			glTexCoord2d(1,0); glVertex2d(1,0);
+			glTexCoord2d(1,1); glVertex2d(1,1);
+			glTexCoord2d(0,1); glVertex2d(0,1);
+		glEnd();
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
 		gluOrtho2D(0,width,height,0);
 		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
 		form.render();
 		if (chatBox)
 			chatForm.render();
