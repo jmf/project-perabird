@@ -52,13 +52,16 @@ Connection::Connection(std::string host, int port) : recvThread(0)
 }
 Connection::~Connection()
 {
-	SDLNet_TCP_Close(socket);
+	if (isGood())
+		SDLNet_TCP_Close(socket);
 	socket = 0;
 	SDL_KillThread(recvThread);
 	std::cout << "Connection closed" << std::endl;
 }
 
-bool Connection::isGood() { return socket; }
+bool Connection::isGood() {
+	return socket;
+}
 
 void Connection::send(void*msg, int size) {
 	if (isGood())
@@ -70,7 +73,13 @@ void Connection::sendByte(uint8_t i) {
 
 uint8_t *Connection::recv(void* buffer, int size) {
 	if (isGood())
-		SDLNet_TCP_Recv(socket,buffer,size);
+	{
+		if(!SDLNet_TCP_Recv(socket,buffer,size))
+		{
+			GAME->getConsole()->print("Lost connection");
+			socket = 0;
+		}
+	}
 }
 
 uint8_t Connection::recvByte() {
@@ -168,6 +177,7 @@ int Connection::recvLoop(void *cptr)
 	Message m;
 	while (c->isGood())
 	{
+		std::cout << "receiving..." << std::endl;
 		m = c->receiveMessage();
 		if (m.getType() == MSG_CHAT)
 		{

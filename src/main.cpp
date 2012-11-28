@@ -53,8 +53,9 @@ int main (int argc, char**argv)
 	SDL_Event e;
 	
 	Forms::LoginForm form(&done);
+	Forms::ChatForm chatForm;
 	
-	bool inZone = false;
+	bool chatBox = false;
 	
 	while (!done)
 	{
@@ -68,11 +69,18 @@ int main (int argc, char**argv)
 					SDL_SetVideoMode(width,height, 32, SDL_OPENGL | SDL_RESIZABLE);
 					glViewport(0,0,width,height);
 					break;
+				case SDL_KEYDOWN:
+					if (e.key.keysym.sym == SDLK_F10)
+						chatBox = !chatBox;
+					break;
 				case SDL_QUIT:
 					done = true;
 					break;
 			} if (done) break;
-			form.sdlEvent(e);
+			if (chatBox)
+				chatForm.sdlEvent(e);
+			else
+				form.sdlEvent(e);
 			if (done) break;
 		}
 		int x,y;
@@ -83,6 +91,8 @@ int main (int argc, char**argv)
 		gluOrtho2D(0,width,height,0);
 		glMatrixMode(GL_MODELVIEW);
 		form.render();
+		if (chatBox)
+			chatForm.render();
 		Game::getInstance()->getConsole()->render();
 		glFlush();
 		SDL_GL_SwapBuffers();

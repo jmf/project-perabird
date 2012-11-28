@@ -119,6 +119,7 @@ namespace Gui
 			int getY();
 			int getWidth();
 			int getHeight();
+			void setText(std::string _text);
 			virtual std::string getText();
 			virtual void setState(State _state);
 			virtual State getState();

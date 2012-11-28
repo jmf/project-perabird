@@ -72,4 +72,37 @@ namespace Forms {
 		acceptButton.addEventHandler(new ConnectEventHandler(&userEntry,&passEntry));
 		add(&acceptButton);
 	}
+	
+	
+	struct ChatSendEventHandler : Gui::EventHandler
+	{
+		ChatSendEventHandler(Gui::Entry*_entry) : entry(_entry) {}
+		virtual void operator()(Gui::Event &e)
+		{
+			if (e.type == Gui::MOUSEUP)
+			{
+				GAME->sendMessage(entry->getEntryText());
+				entry->setText("");
+			}
+		}
+		private:
+			Gui::Entry*entry;
+	};
+	
+	ChatForm::ChatForm() :
+		entry(RESOURCES->getGuiTheme("entry")),
+		send(RESOURCES->getGuiTheme("button"),"Send")
+	{
+		using namespace Gui;
+		entry.setPosition(0,-16-2);
+		entry.setSize(256,32);
+		entry.setAlignment(HALIGN_MIDDLE,VALIGN_MIDDLE);
+		add(&entry);
+		send.setPosition(0,16+2);
+		send.setSize(64,32);
+		send.setAlignment(HALIGN_MIDDLE,VALIGN_MIDDLE);
+		send.addEventHandler(new ChatSendEventHandler(&entry));
+		add(&send);
+	}
+	
 }

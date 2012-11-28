@@ -33,6 +33,13 @@ namespace Forms {
 			Gui::Button cancelButton;
 			Gui::Button acceptButton;
 	};
+	class ChatForm : public Gui::Form {
+		public:
+			ChatForm();
+		private:
+			Gui::Entry entry;
+			Gui::Button send;
+	};
 }
 
 #endif //__FORMS_H__

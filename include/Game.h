@@ -31,6 +31,7 @@ class Game
 		static Game *getInstance();
 		void connect(std::string host, int port, std::string user, std::string pswd);
 		void disconnect();
+		void sendMessage(std::string msg);
 		Console *getConsole();
 		void render();
 	private:

@@ -52,6 +52,14 @@ void Game::disconnect() {
 	connection = 0;
 }
 
+void Game::sendMessage(std::string msg)
+{
+	connection->sendByte(MSG_BEGIN);
+	connection->sendByte(MSG_CHAT);
+	connection->send((void*)msg.c_str(),msg.size());
+	connection->sendByte(MSG_END);
+}
+
 Console *Game::getConsole() {
 	return &console;
 }

@@ -315,6 +315,7 @@ namespace Gui
 	int Element::getY() { return y; }
 	int Element::getWidth() { return w; }
 	int Element::getHeight() { return h; }
+	void Element::setText(std::string _text) { text = _text; }
 	std::string Element::getText() { return text; }
 	void Element::setState(State _state) { state = _state; }
 	State Element::getState() { return state; }
