@@ -18,9 +18,13 @@
 MSG_SEP = 0 # used as a separator in messages
 MSG_BEGIN = 1 # used as first byte of a message
 MSG_END = 2 # used as last byte of a message
-MSG_LOGIN = 5 # login/identify message
-MSG_JOIN = 6 # join message
-MSG_QUIT = 7 # quit message (can be used to kick, too)
+
+MSG_ACCEPT = 3 # player accepted after login
+MSG_KICK = 4 # the name says it all :D
+
+MSG_LOGIN = 5 # login message: user and (hashed) password
+MSG_JOIN = 6 # someone joined
+MSG_QUIT = 7 # someone quit
 MSG_PLAYERPOS = 8 # player position update
 MSG_CHAT = 9 # a chat message
 

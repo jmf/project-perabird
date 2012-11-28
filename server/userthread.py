@@ -30,13 +30,16 @@ def userthread(user,users):
 			if not o: break
 			if o != MSG_BEGIN: continue
 			msgType = recv(sock)[1]
-			if msgType == MSG_LOGIN:
+			if msgType == MSG_LOGIN and user.name == "":
 				parsed = parseMessage('str:hexstr',sock)
 				if len(parsed) != 2: continue
 				name, pswd = parsed
 				if auth(name,pswd):
 					user.name = name
 					print(user.name,"logged in from",addr[0])
+					send(user.sock,MSG_BEGIN)
+					send(user.sock,MSG_ACCEPT)
+					send(user.sock,MSG_END)
 					for u in users:
 						send(u.sock,MSG_BEGIN)
 						send(u.sock,MSG_JOIN)
@@ -45,9 +48,18 @@ def userthread(user,users):
 				else:
 					print(addr[0],"tried to login as",name)
 					send(user.sock,MSG_BEGIN)
-					send(user.sock,MSG_QUIT)
+					send(user.sock,MSG_KICK)
 					send(user.sock,MSG_END)
 					break
+			if msgType == MSG_CHAT:
+				parsed = parseMessage('str',sock)
+				if len(parsed) != 1: continue
+				for u in users:
+					send(u.sock,MSG_BEGIN)
+					send(u.sock,MSG_CHAT)
+					send(u.sock,'<'+user.name+'> ')
+					send(u.sock,parsed[0])
+					send(u.sock,MSG_END)
 	except:
 		print(addr[0],"lost connection")
 	user.sock.close()

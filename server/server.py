@@ -20,6 +20,7 @@ from threading import Thread
 from sys import argv
 
 from acceptthread import *
+from commands import *
 
 
 def main():
@@ -41,15 +42,10 @@ def main():
 		except:
 			break
 		if type(t) != str: continue
-		if t == "list":
-			l = ""
-			for u in users:
-				if u.name:
-					l += u.name + ', '
-			print(l)
-		elif t == "shutdown":
+		if t == "shutdown":
 			break
-		else: print("Unknown command. Try help.")
+		else:
+			if not handleCommand(None,t,users): print("Unknown command. Try help.")
 	main_socket.close()
 	print("Exiting...")
 

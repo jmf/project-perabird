@@ -14,6 +14,26 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Project Perabird.  If not, see <http://www.gnu.org/licenses/>
 
-def handleCommand(sender,command):
+from protocol import *
+
+def handleCommand(sender,command,users):
 	args = command.split(' ')
+	if args[0] == "list":
+		l = ""
+		for u in users:
+			if u.name:
+				l += u.name + ', '
+		print(l)
+		return True
+	elif args[0] == "send":
+		if len(args) < 2:
+			print("Usage: send <message>")
+			return True
+		for u in users:
+			send(u.sock,MSG_BEGIN)
+			send(u.sock,MSG_CHAT)
+			send(u.sock," ".join(args[1:]))
+			send(u.sock,MSG_END)
+		return True
+	return False
 

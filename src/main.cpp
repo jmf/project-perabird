@@ -56,10 +56,6 @@ int main (int argc, char**argv)
 	
 	bool inZone = false;
 	
-	Game::getInstance()->getConsole()->print("Test :D");
-	Game::getInstance()->getConsole()->print("Line 1");
-	Game::getInstance()->getConsole()->print("Line 2");
-	
 	while (!done)
 	{
 		while (SDL_PollEvent(&e))

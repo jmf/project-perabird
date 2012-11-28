@@ -20,3 +20,4 @@ class User:
 	def __init__(self,sock,addr):
 		self.sock = sock
 		self.addr = addr
+		self.name = ""
