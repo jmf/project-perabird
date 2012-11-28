@@ -19,11 +19,12 @@ from user import *
 from protocol import *
 from auth import *
 from msgparser import *
+from commands import *
 
 def userthread(user,users):
 	sock = user.sock
 	addr = user.addr
-	try:
+	if True:#try:
 		print(addr[0],'connected')
 		while 1:
 			o = recv(sock)[1]
@@ -54,14 +55,19 @@ def userthread(user,users):
 			if msgType == MSG_CHAT:
 				parsed = parseMessage('str',sock)
 				if len(parsed) != 1: continue
-				for u in users:
-					send(u.sock,MSG_BEGIN)
-					send(u.sock,MSG_CHAT)
-					send(u.sock,'<'+user.name+'> ')
-					send(u.sock,parsed[0])
-					send(u.sock,MSG_END)
-	except:
-		print(addr[0],"lost connection")
+				msg = parsed[0]
+				if len(msg)>1 and msg[0] == '/':
+					handleCommand(user,msg[1:],users)
+				else:
+					for u in users:
+						send(u.sock,MSG_BEGIN)
+						send(u.sock,MSG_CHAT)
+						send(u.sock,'<'+user.name+'> ')
+						send(u.sock,msg)
+						send(u.sock,MSG_END)
+	#except:
+	#	pass
+	print(addr[0],"lost connection")
 	user.sock.close()
 	users.remove(user)
 

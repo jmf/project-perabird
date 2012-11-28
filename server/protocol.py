@@ -37,3 +37,13 @@ def send(sock,data):
 	msg = data
 	if type(msg) == int: msg = chr(msg)
 	sock.send(msg.encode())
+
+def sendChat(user,msg):
+	if user == None:
+		print(msg)
+	else:
+		send(user.sock,MSG_BEGIN)
+		send(user.sock,MSG_CHAT)
+		send(user.sock,msg)
+		send(user.sock,MSG_END)
+

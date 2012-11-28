@@ -36,7 +36,7 @@ int main (int argc, char**argv)
 {
 	SDL_Init(SDL_INIT_VIDEO);
 	SDLNet_Init();
-	SDL_WM_SetCaption("test",0);
+	SDL_WM_SetCaption("Project perabird",0);
 	SDL_EnableUNICODE(SDL_ENABLE);
 	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 	glClearColor(0,0,0,0);

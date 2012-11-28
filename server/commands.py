@@ -23,17 +23,7 @@ def handleCommand(sender,command,users):
 		for u in users:
 			if u.name:
 				l += u.name + ', '
-		print(l)
-		return True
-	elif args[0] == "send":
-		if len(args) < 2:
-			print("Usage: send <message>")
-			return True
-		for u in users:
-			send(u.sock,MSG_BEGIN)
-			send(u.sock,MSG_CHAT)
-			send(u.sock," ".join(args[1:]))
-			send(u.sock,MSG_END)
+		sendChat(sender,l)
 		return True
 	return False
 

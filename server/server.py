@@ -46,6 +46,8 @@ def main():
 			break
 		else:
 			if not handleCommand(None,t,users): print("Unknown command. Try help.")
+	for u in users:
+		u.sock.close()
 	main_socket.close()
 	print("Exiting...")
 
