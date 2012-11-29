@@ -28,6 +28,12 @@ namespace SimpleEventHandlers {
 		private:
 			bool *b;
 	};
+	struct PushOnReturn : Gui::EventHandler {
+		PushOnReturn (Gui::Element*_toPush);
+		virtual void operator()(Gui::Event &e);
+		private:
+			Gui::Element *toPush;
+	};
 }
 
 #endif //__SIMPLEEVENTHANDLERS_H__

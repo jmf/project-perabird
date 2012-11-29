@@ -17,6 +17,8 @@
 */
 
 #include <string>
+#include <GL/gl.h>
+#include <GL/glu.h>
 #include "Connection.h"
 #include "Console.h"
 #include "Game.h"
@@ -62,6 +64,17 @@ void Game::sendMessage(std::string msg)
 
 Console *Game::getConsole() {
 	return &console;
+}
+
+void Game::render() {
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	int viewport[4];
+	glGetIntegerv(GL_VIEWPORT,viewport);
+	gluOrtho2D(0,viewport[2],viewport[3],0);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	getConsole()->render();
 }
 
 

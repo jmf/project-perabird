@@ -24,49 +24,43 @@ from commands import *
 def userthread(user,users):
 	sock = user.sock
 	addr = user.addr
-	if True:#try:
-		print(addr[0],'connected')
-		while 1:
-			o = recv(sock)[1]
-			if not o: break
-			if o != MSG_BEGIN: continue
-			msgType = recv(sock)[1]
-			if msgType == MSG_LOGIN and user.name == "":
-				parsed = parseMessage('str:hexstr',sock)
-				if len(parsed) != 2: continue
-				name, pswd = parsed
-				if auth(name,pswd):
-					user.name = name
-					print(user.name,"logged in from",addr[0])
-					send(user.sock,MSG_BEGIN)
-					send(user.sock,MSG_ACCEPT)
-					send(user.sock,MSG_END)
-					for u in users:
-						send(u.sock,MSG_BEGIN)
-						send(u.sock,MSG_JOIN)
-						send(u.sock,user.name)
-						send(u.sock,MSG_END)
-				else:
-					print(addr[0],"tried to login as",name)
-					send(user.sock,MSG_BEGIN)
-					send(user.sock,MSG_KICK)
-					send(user.sock,MSG_END)
-					break
-			if msgType == MSG_CHAT:
-				parsed = parseMessage('str',sock)
-				if len(parsed) != 1: continue
-				msg = parsed[0]
-				if len(msg)>1 and msg[0] == '/':
-					handleCommand(user,msg[1:],users)
-				else:
-					for u in users:
-						send(u.sock,MSG_BEGIN)
-						send(u.sock,MSG_CHAT)
-						send(u.sock,'<'+user.name+'> ')
-						send(u.sock,msg)
-						send(u.sock,MSG_END)
-	#except:
-	#	pass
+	print(addr[0],'connected')
+	while 1:
+		o = recv(sock)[1]
+		if not o: break
+		if o != MSG_BEGIN: continue
+		msgType = recv(sock)[1]
+		if msgType == MSG_LOGIN and user.name == "":
+			parsed = parseMessage('str:hexstr',sock)
+			if len(parsed) != 2: continue
+			name, pswd = parsed
+			if auth(name,pswd):
+				user.name = name
+				print(user.name,"logged in from",addr[0])
+				send(user.sock,MSG_BEGIN)
+				send(user.sock,MSG_ACCEPT)
+				send(user.sock,MSG_END)
+				for u in users:
+					send(u.sock,MSG_BEGIN)
+					send(u.sock,MSG_JOIN)
+					send(u.sock,user.name)
+					send(u.sock,MSG_END)
+			else:
+				print(addr[0],"tried to login as",name)
+				send(user.sock,MSG_BEGIN)
+				send(user.sock,MSG_KICK)
+				send(user.sock,MSG_END)
+				break
+		if msgType == MSG_CHAT:
+			parsed = parseMessage('str',sock)
+			if len(parsed) != 1: continue
+			msg = parsed[0]
+			if len(msg)>1 and msg[0] == '/':
+				handleCommand(user,msg[1:],users)
+			else:
+				for u in users:
+					sendChat(user,'<'+user.name+'> '+msg)
+				sendChat(None,'[Chat] '+user.name+': '+msg)
 	print(addr[0],"lost connection")
 	user.sock.close()
 	users.remove(user)

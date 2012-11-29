@@ -26,4 +26,17 @@ namespace SimpleEventHandlers {
 		if (e.type == Gui::MOUSEUP)
 			*b = !(*b);
 	}
+	
+	
+	PushOnReturn::PushOnReturn (Gui::Element*_toPush) : toPush(_toPush) {}
+	void PushOnReturn::operator()(Gui::Event &e)
+	{
+		if (e.type == Gui::KEYDOWN && e.key == '\r' && toPush->getState()!=Gui::INACTIVE)
+		{
+			Gui::Event ne;
+			ne.type = Gui::MOUSEUP;
+			toPush->event(ne);
+			toPush->setState(Gui::NORMAL);
+		}
+	}
 }

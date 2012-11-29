@@ -106,7 +106,7 @@ int main (int argc, char**argv)
 		form.render();
 		if (chatBox)
 			chatForm.render();
-		Game::getInstance()->getConsole()->render();
+		GAME->render();
 		glFlush();
 		SDL_GL_SwapBuffers();
 		newtime = SDL_GetTicks();

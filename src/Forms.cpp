@@ -97,6 +97,7 @@ namespace Forms {
 		entry.setPosition(0,-16-2);
 		entry.setSize(256,32);
 		entry.setAlignment(HALIGN_MIDDLE,VALIGN_MIDDLE);
+		entry.addEventHandler(new SimpleEventHandlers::PushOnReturn(&send));
 		add(&entry);
 		send.setPosition(0,16+2);
 		send.setSize(64,32);

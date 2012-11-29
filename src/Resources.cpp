@@ -89,7 +89,7 @@ void Resources::loadTexture(std::string name)
 			surface->w, surface->h, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
 	}
 	SDL_FreeSurface(surface);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	textures[name] = texture;
 	Debug::print(Debug::DEBUG, "Loaded texture: "+name);
 }
