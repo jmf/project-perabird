@@ -17,14 +17,14 @@
 */
 
 #include "Gui.h"
+#include "Game.h"
 #include "SimpleEventHandlers.h"
 
 namespace SimpleEventHandlers {
-	Toggle::Toggle(bool*_b) : b(_b) {}
-	void Toggle::operator()(Gui::Event &e)
+	void Exit::operator()(Gui::Event &e)
 	{
 		if (e.type == Gui::MOUSEUP)
-			*b = !(*b);
+			GAME->exit();
 	}
 	
 	

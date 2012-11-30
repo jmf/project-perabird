@@ -28,13 +28,12 @@ class Console {
 	public:
 		Console();
 		~Console();
-		void init();
 		void print(std::string line);
 		void event(SDL_Event &e);
 		void render();
 	private:
 		std::vector<std::string> text;
-		Gui::Font *font;
+		Gui::Font font;
 };
 
 #endif //__CONSOLE_H__

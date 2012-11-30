@@ -19,18 +19,28 @@
 #include <string>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <SDL/SDL.h>
+#include "Debug.h"
 #include "Connection.h"
 #include "Console.h"
+#include "Resources.h"
+#include "Tools.h"
 #include "Game.h"
 
 
-Game Game::instance;
-Game::Game(): connection(0) {}
+Game *Game::instance(0);
+Game::Game(): connection(0) { Debug::print(Debug::DEBUG,"test");}
 Game::~Game() {
 	delete connection;
 }
 Game* Game::getInstance () {
-	return &instance;
+	return instance;
+}
+void Game::init() {
+	instance = new Game;
+}
+void Game::quit() {
+	delete instance; instance = 0;
 }
 
 
@@ -56,6 +66,8 @@ void Game::disconnect() {
 
 void Game::sendMessage(std::string msg)
 {
+	if (!connection) return;
+	if (msg=="") return;
 	connection->sendByte(MSG_BEGIN);
 	connection->sendByte(MSG_CHAT);
 	connection->send((void*)msg.c_str(),msg.size());
@@ -66,15 +78,53 @@ Console *Game::getConsole() {
 	return &console;
 }
 
+void Game::toggleChat() { chatOpened = !chatOpened; }
+
 void Game::render() {
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	int viewport[4];
-	glGetIntegerv(GL_VIEWPORT,viewport);
-	gluOrtho2D(0,viewport[2],viewport[3],0);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	// background
+	if (!(connection && connection->isGood()))
+	{
+		make2d(true);
+		glBindTexture(GL_TEXTURE_2D,RESOURCES->getTexture("login"));
+		glBegin(GL_QUADS);
+			glTexCoord2d(0,0); glVertex2d(0,0);
+			glTexCoord2d(1,0); glVertex2d(1,0);
+			glTexCoord2d(1,1); glVertex2d(1,1);
+			glTexCoord2d(0,1); glVertex2d(0,1);
+		glEnd();
+	}
+	// form rendering
+	make2d(false);
 	getConsole()->render();
+	if (!(connection && connection->isGood()))
+		loginForm.render();
+	else if (chatOpened)
+		chatForm.render();
 }
 
+void Game::event(SDL_Event &e) {
+	bool guiEvent(false);
+	if (!(connection && connection->isGood()))
+		guiEvent = loginForm.sdlEvent(e);
+	else
+	{
+		if (chatOpened)
+		guiEvent = chatForm.sdlEvent(e);
+		switch(e.type) {
+			case SDL_KEYDOWN:
+				switch(e.key.keysym.unicode) {
+					case '\r':
+						toggleChat();
+					default:
+						break;
+				} break;
+			default:
+				break;
+		}
+	}
+}
+
+bool Game::alive() { return !done; }
+void Game::exit() { done = true; }
 

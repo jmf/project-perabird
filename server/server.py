@@ -15,7 +15,7 @@
 #    along with Project Perabird.  If not, see <http://www.gnu.org/licenses/>
 
 
-from socket import socket, AF_INET, SOCK_STREAM
+from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 from threading import Thread
 from sys import argv
 
@@ -25,6 +25,7 @@ from commands import *
 
 def main():
 	main_socket = socket(AF_INET,SOCK_STREAM)
+	main_socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 	port = 5153
 	if len(argv) >= 2:
 		port = int(argv[1])
@@ -42,10 +43,9 @@ def main():
 		except:
 			break
 		if type(t) != str: continue
-		if t == "shutdown":
+		r = handleCommand(None,t,users)
+		if r == CMD_BREAK:
 			break
-		else:
-			if not handleCommand(None,t,users): print("Unknown command. Try help.")
 	for u in users:
 		u.sock.close()
 	main_socket.close()

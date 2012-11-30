@@ -40,8 +40,7 @@ namespace Forms {
 			Gui::Entry * userEntry;
 			Gui::PassEntry * passEntry;
 	};
-	LoginForm::LoginForm(bool *_done) :
-		done(_done),
+	LoginForm::LoginForm() :
 		label(RESOURCES->getGuiTheme("button"),"Login"),
 		userEntry(RESOURCES->getGuiTheme("entry")),
 		passEntry(RESOURCES->getGuiTheme("entry")),
@@ -56,15 +55,17 @@ namespace Forms {
 		userEntry.setPosition(0,-16-2);
 		userEntry.setSize(128,32);
 		userEntry.setAlignment(HALIGN_MIDDLE,VALIGN_MIDDLE);
+		userEntry.addEventHandler(new SimpleEventHandlers::PushOnReturn(&acceptButton));
 		add(&userEntry);
 		passEntry.setPosition(0,16+2);
 		passEntry.setSize(128,32);
 		passEntry.setAlignment(HALIGN_MIDDLE,VALIGN_MIDDLE);
+		passEntry.addEventHandler(new SimpleEventHandlers::PushOnReturn(&acceptButton));
 		add(&passEntry);
 		cancelButton.setPosition(-32,16+2+32+4);
 		cancelButton.setSize(64,32);
 		cancelButton.setAlignment(HALIGN_MIDDLE,VALIGN_MIDDLE);
-		cancelButton.addEventHandler(new SimpleEventHandlers::Toggle(done));
+		cancelButton.addEventHandler(new SimpleEventHandlers::Exit());
 		add(&cancelButton);
 		acceptButton.setPosition(32,16+2+32+4);
 		acceptButton.setSize(64,32);

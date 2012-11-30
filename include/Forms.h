@@ -24,7 +24,7 @@
 namespace Forms {
 	class LoginForm : public Gui::Form {
 		public:
-			LoginForm(bool *_done);
+			LoginForm();
 		private:
 			bool *done;
 			Gui::Label label;

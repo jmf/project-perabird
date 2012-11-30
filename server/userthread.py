@@ -45,6 +45,8 @@ def userthread(user,users):
 					send(u.sock,MSG_JOIN)
 					send(u.sock,user.name)
 					send(u.sock,MSG_END)
+				for u in users:
+					sendChat(u,'*** '+user.name+' joined the game')
 			else:
 				print(addr[0],"tried to login as",name)
 				send(user.sock,MSG_BEGIN)
@@ -60,8 +62,10 @@ def userthread(user,users):
 			else:
 				for u in users:
 					sendChat(u,'<'+user.name+'> '+msg)
-				sendChat(None,'[Chat] '+user.name+': '+msg)
+				print('[Chat] '+user.name+': '+msg)
 	print(addr[0],"lost connection")
 	user.sock.close()
 	users.remove(user)
+	for u in users:
+		sendChat(u,'*** '+user.name+' left the game')
 

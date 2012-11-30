@@ -16,3 +16,22 @@
     along with Project Perabird.  If not, see <http://www.gnu.org/licenses/>
 */
 
+#include <GL/gl.h>
+#include <GL/glu.h>
+
+void make2d(bool rel)
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	if (rel)
+		gluOrtho2D(0,1,0,1);
+	else
+	{
+		int viewport[4];
+		glGetIntegerv(GL_VIEWPORT,viewport);
+		gluOrtho2D(0,viewport[2],viewport[3],0);
+	}
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+}
+

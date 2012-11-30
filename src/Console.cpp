@@ -25,16 +25,8 @@
 #include "Resources.h"
 #include "Console.h"
 
-Console::Console() : font(0) {}
-Console::~Console() {
-	if (font)
-		delete font;
-}
-
-void Console::init()
-{
-	font = new Gui::Font("console");
-}
+Console::Console() : font("console") {}
+Console::~Console() {}
 
 void Console::print(std::string line)
 {
@@ -48,7 +40,6 @@ void Console::event(SDL_Event &e)
 
 void Console::render()
 {
-	if(!font) return;
 	glPushMatrix();
 	glScalef(16,16,1);
 	int startline = text.size()-10;
@@ -56,7 +47,7 @@ void Console::render()
 	int endline = text.size();
 	for (unsigned int i = startline; i < endline; i++)
 	{
-		font->render(text[i]);
+		font.render(text[i]);
 		glTranslated(0,1,0);
 	}
 	glPopMatrix();

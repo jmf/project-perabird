@@ -27,7 +27,7 @@ namespace Debug
 		switch (level)
 		{
 			case DEBUG:
-				//std::cout << "[debug] " << text << std::endl;
+				std::cout << "[debug] " << text << std::endl;
 				break;
 			case WARNING:
 				std::cout << "[WARNING] " << text << std::endl;

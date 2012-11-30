@@ -20,6 +20,8 @@
 #define __GAME_H__
 
 #include <string>
+#include <SDL/SDL.h>
+#include "Forms.h"
 #include "Connection.h"
 #include "Console.h"
 
@@ -29,20 +31,30 @@ class Game
 {
 	public:
 		static Game *getInstance();
+		static void init();
+		static void quit();
 		void connect(std::string host, int port, std::string user, std::string pswd);
 		void disconnect();
 		void sendMessage(std::string msg);
 		Console *getConsole();
+		void toggleChat();
 		void render();
+		void event(SDL_Event&e);
+		bool alive();
+		void exit();
 	private:
 		Connection * connection;
 		Console console;
+		Forms::LoginForm loginForm;
+		Forms::ChatForm chatForm;
+		bool chatOpened;
 		
 		std::string username;
-
+	
+		bool done;
 		Game();
 		~Game();
-		static Game instance;
+		static Game *instance;
 };
 
 #endif //__GAME_H__

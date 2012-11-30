@@ -22,11 +22,8 @@
 #include "Gui.h"
 
 namespace SimpleEventHandlers {
-	struct Toggle : Gui::EventHandler {
-		Toggle(bool*_b);
+	struct Exit : Gui::EventHandler {
 		virtual void operator()(Gui::Event &e);
-		private:
-			bool *b;
 	};
 	struct PushOnReturn : Gui::EventHandler {
 		PushOnReturn (Gui::Element*_toPush);

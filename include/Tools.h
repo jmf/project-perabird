@@ -16,3 +16,5 @@
     along with Project Perabird.  If not, see <http://www.gnu.org/licenses/>
 */
 
+void make2d(bool rel);
+

@@ -44,68 +44,33 @@ int main (int argc, char**argv)
 	SDL_SetVideoMode(width,height,32,SDL_OPENGL|SDL_RESIZABLE);
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024);
 	Mix_AllocateChannels(8);
-	Game::getInstance()->getConsole()->init();
+	Game::init();
 	
 	Resources *res = Resources::getInstance();
 	
-	bool done(false);
 	int oldtime(SDL_GetTicks()), newtime(oldtime);
 	SDL_Event e;
-	
-	Forms::LoginForm form(&done);
-	Forms::ChatForm chatForm;
-	
-	bool chatBox = false;
-	
-	while (!done)
+	while (GAME->alive())
 	{
 		while (SDL_PollEvent(&e))
 		{
 			switch(e.type)
 			{
 				case SDL_VIDEORESIZE:
-					width =e.resize.w;
-					height= e.resize.h;
+					width = e.resize.w;
+					height = e.resize.h;
 					SDL_SetVideoMode(width,height, 32, SDL_OPENGL | SDL_RESIZABLE);
 					glViewport(0,0,width,height);
 					break;
-				case SDL_KEYDOWN:
-					if (e.key.keysym.sym == SDLK_F10)
-						chatBox = !chatBox;
-					break;
 				case SDL_QUIT:
-					done = true;
+					GAME->exit();
 					break;
-			} if (done) break;
-			if (chatBox)
-				chatForm.sdlEvent(e);
-			else
-				form.sdlEvent(e);
-			if (done) break;
+			} if (!GAME->alive()) break;
+			GAME->event(e);
+			if (!GAME->alive()) break;
 		}
 		int x,y;
-		if (done) break;
-		glClear(GL_COLOR_BUFFER_BIT);
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluOrtho2D(0,1,0,1);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		glBindTexture(GL_TEXTURE_2D,RESOURCES->getTexture("login"));
-		glBegin(GL_QUADS);
-			glTexCoord2d(0,0); glVertex2d(0,0);
-			glTexCoord2d(1,0); glVertex2d(1,0);
-			glTexCoord2d(1,1); glVertex2d(1,1);
-			glTexCoord2d(0,1); glVertex2d(0,1);
-		glEnd();
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluOrtho2D(0,width,height,0);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		form.render();
-		if (chatBox)
-			chatForm.render();
+		if (!GAME->alive()) break;
 		GAME->render();
 		glFlush();
 		SDL_GL_SwapBuffers();
@@ -113,6 +78,7 @@ int main (int argc, char**argv)
 		if (newtime-oldtime < 30) SDL_Delay(30-(newtime-oldtime));
 		oldtime = newtime;
 	}
+	Game::quit();
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 	Mix_CloseAudio();
 	SDLNet_Quit();

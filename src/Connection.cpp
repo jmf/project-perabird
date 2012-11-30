@@ -76,8 +76,9 @@ uint8_t *Connection::recv(void* buffer, int size) {
 	{
 		if(!SDLNet_TCP_Recv(socket,buffer,size))
 		{
-			GAME->getConsole()->print("Lost connection");
+			GAME->getConsole()->print("[Lost connection]");
 			socket = 0;
+			GAME->disconnect();
 		}
 	}
 }
@@ -166,8 +167,10 @@ bool Connection::login(std::string user, std::string pswd)
 	if (m.getType() == MSG_ACCEPT) {
 		recvThread = SDL_CreateThread(recvLoop,this);
 		return true;
+	} else {
+		socket = 0;
+		return false;
 	}
-	return false;
 }
 
 
