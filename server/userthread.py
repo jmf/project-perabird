@@ -62,7 +62,7 @@ def userthread(user,users):
 			else:
 				for u in users:
 					sendChat(u,'<'+user.name+'> '+msg)
-				print('[Chat] '+user.name+': '+msg)
+				sendChat(None,'[Chat] '+user.name+': '+msg)
 	print(addr[0],"lost connection")
 	user.sock.close()
 	users.remove(user)
