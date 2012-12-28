@@ -5,7 +5,7 @@ EXEC_NAME=test
 CROSS=false
 
 CXX=g++
-DEST=build/native/
+DEST=bin
 
 ifeq ($(CROSS),true)
 	CXX=i486-mingw32-g++
@@ -18,7 +18,7 @@ else
 	EXEC=$(EXEC_NAME)
 endif
 
-LIBS+=-lSDL -lSDL_mixer -lSDL_image -lSDL_net -lcrypto
+LIBS+=-lSDL -lSDL_mixer -lSDL_image -lSDL_net -lcrypto -lIrrlicht
 INCLUDES+=-I include/
 
 CXXFLAGS=-g
@@ -31,7 +31,7 @@ OBJ=$(SRC:.cpp=.o)
 all: $(EXEC)
 	mkdir -p $(DEST)
 	cp $(EXEC) $(DEST)
-
+	rm $(EXEC)
 $(EXEC): $(OBJ)
 	$(CXX) -o $@ $^ $(LDFLAGS) $(CXXFLAGS)
 
