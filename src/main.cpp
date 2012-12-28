@@ -25,7 +25,7 @@ int main (int argc, char**argv)
 	Gui::start();//Show the gui
 	while(Video::device->run())
 	{
-		Video::driver->beginScene(true, true, SColor(255,100,101,140));
+		Video::driver->beginScene(true, true, SColor(0,0,0,0));
 
 		smgr->drawAll();
 		Gui::guienv->drawAll();
