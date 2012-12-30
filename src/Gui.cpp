@@ -27,6 +27,7 @@ void Gui::start()
 	guienv->addImage(Video::driver->getTexture("../media/logo.png"), position2d<int>(0,0));
 	guienv->addEditBox(L"Useless Test Textbox", rect<s32>(350, 400, 550, 420));
 	guienv->addEditBox(L"Even more Useless", rect<s32>(350, 440, 550, 460));
+	guienv->addButton(rect<s32>(210,540,610,570), 0, 101,L"Quit", L"Exits Program");//101 is the ID
 }
 
 

@@ -1,10 +1,8 @@
-#include <iostream>
-#include <vector>
-#include <sstream>
 #include <irrlicht/irrlicht.h>
 #include <SDL/SDL_net.h>
 #include "Gui.h"
 #include "Video.h"
+#include "Event.h"
 
 using namespace irr;
 using namespace core;
@@ -18,23 +16,25 @@ int main (int argc, char**argv)
 	int height=480;//Height of the window
 
 	SDLNet_Init();//Initializing SDLNet
-	
+
 	Video::init();//Initialize the Video driver
+	MyEventReceiver::init();
 	ISceneManager* smgr = Video::device->getSceneManager();//Get Scene manager enviroment
 	Gui::env();//Get GUI enviroment
 	Gui::start();//Show the gui
+
 	while(Video::device->run())
 	{
-		Video::driver->beginScene(true, true, SColor(0,0,0,0));
+		Video::driver->beginScene(true, true, SColor(0,0,0,0));//Draw the backgorund color and begin the scene
 
-		smgr->drawAll();
-		Gui::guienv->drawAll();
+		smgr->drawAll();//Let the scene manager do his job
+		Gui::guienv->drawAll();//Draw the GUI
 
-		Video::driver->endScene();
+		Video::driver->endScene();//End the scene
 	}
 	
-	Video::device->drop();
+	Video::device->drop();//Stop the device
 	SDLNet_Quit();//Quit SDLNet
-	return 0;
+	return 0;//Everything okay!
 }
 
