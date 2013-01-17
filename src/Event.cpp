@@ -30,7 +30,29 @@ bool MyEventReceiver::OnEvent(const SEvent& event)
 		switch(event.GUIEvent.EventType)
 		{
 			case EGET_BUTTON_CLICKED:
+			//Singleplayer
 			if (id == 101)
+			{
+				Video::device->closeDevice();
+				return true;
+			}
+
+			//Multiplayer:
+			if (id == 102)
+			{
+				Video::device->closeDevice();
+				return true;
+			}
+
+			//Credits:
+			if (id == 103)
+			{
+				Video::device->closeDevice();
+				return true;
+			}
+
+			//Quit:
+			if (id == 104)
 			{
 				Video::device->closeDevice();
 				return true;

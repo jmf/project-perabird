@@ -3,6 +3,7 @@
 #include "Gui.h"
 #include "Video.h"
 #include "Event.h"
+#include "Connection.h"
 
 using namespace irr;
 using namespace core;
