@@ -26,4 +26,7 @@ void GuiMainMenu::show()
 	*Gui::guienv->addButton(rect<s32>(110,540,510,590), 0, 104,L"Quit", L"Exit Game");//104 is the ID
 }
 
-
+void GuiMainMenu::credits()
+{
+	*Gui::guienv->addImage(Video::driver->getTexture("../media/logo.png"), position2d<int>(500,500));
+}

@@ -1,5 +1,6 @@
 #include "Video.h"
 #include "Gui.h"
+#include "GuiMainMenu.h"
 #include "Event.h"
 #include <irrlicht/irrlicht.h>
 
@@ -47,7 +48,7 @@ bool MyEventReceiver::OnEvent(const SEvent& event)
 			//Credits:
 			if (id == 103)
 			{
-				Video::device->closeDevice();
+				GuiMainMenu::credits();
 				return true;
 			}
 

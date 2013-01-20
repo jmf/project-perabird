@@ -22,7 +22,7 @@ int main (int argc, char**argv)
 	MyEventReceiver::init();
 	ISceneManager* smgr = Video::device->getSceneManager();//Get Scene manager enviroment
 	Gui::env();//Get GUI enviroment
-	Gui::start();//Show the gui
+	Gui::show();//Show the gui
 
 	while(Video::device->run())
 	{

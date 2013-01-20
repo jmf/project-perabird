@@ -13,7 +13,6 @@ public:
 	~MyEventReceiver();
 	virtual bool OnEvent(const SEvent& event);
 	static void init();
-	//static irr::gui::IGUIEnvironment* guienv;
 private:
 	static MyEventReceiver receiver;
 };

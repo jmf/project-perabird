@@ -10,6 +10,7 @@ public:
 	GuiMainMenu();
 	~GuiMainMenu();
 	static void show();
+	static void credits();
 };
 
 #endif //__GUIMAINMENU_H__

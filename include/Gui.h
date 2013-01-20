@@ -9,7 +9,7 @@ public:
 	Gui();
 	~Gui();
 	static void env();
-	static void start(); 
+	static void show();
 	static irr::gui::IGUIEnvironment* guienv;
 };
 
