@@ -18,8 +18,8 @@ else
 	EXEC=$(EXEC_NAME)
 endif
 
-LIBS+=-lSDL -lSDL_mixer -lSDL_image -lSDL_net -lcrypto -lIrrlicht
-INCLUDES+=-I include/
+LIBS+=-lIrrlicht
+INCLUDES+=-I src/
 
 CXXFLAGS=-g
 
@@ -30,8 +30,7 @@ OBJ=$(SRC:.cpp=.o)
 
 all: $(EXEC)
 	mkdir -p $(DEST)
-	cp $(EXEC) $(DEST)
-	rm $(EXEC)
+	mv $(EXEC) $(DEST)
 $(EXEC): $(OBJ)
 	$(CXX) -o $@ $^ $(LDFLAGS) $(CXXFLAGS)
 

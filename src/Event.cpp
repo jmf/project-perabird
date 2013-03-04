@@ -48,6 +48,7 @@ bool MyEventReceiver::OnEvent(const SEvent& event)
 			//Credits:
 			if (id == 103)
 			{
+				GuiMainMenu::show(false);
 				GuiMainMenu::credits();
 				return true;
 			}

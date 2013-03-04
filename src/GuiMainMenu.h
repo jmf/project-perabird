@@ -9,7 +9,7 @@ class GuiMainMenu
 public:
 	GuiMainMenu();
 	~GuiMainMenu();
-	static void show();
+	static void show(bool menu);
 	static void credits();
 };
 

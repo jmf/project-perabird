@@ -24,5 +24,6 @@ void Gui::env()
 
 void Gui::show()
 {
-	GuiMainMenu::show();
+	bool mainmenu=true;
+	GuiMainMenu::show(mainmenu);
 }

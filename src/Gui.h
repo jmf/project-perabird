@@ -11,6 +11,7 @@ public:
 	static void env();
 	static void show();
 	static irr::gui::IGUIEnvironment* guienv;
+
 };
 
 #endif //__GUI_H__
